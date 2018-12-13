@@ -15,33 +15,27 @@ export default class Catalog {
 	match(deficits, balance) {
 		const maxValue = Math.max(...deficits)
 		const maxIndex = deficits.indexOf(maxValue)
-		const choices = this.shuffle(this.byMaxIndex[maxIndex]).slice(0,4).map(this.getChoice)
+		const products = this.shuffle(this.byMaxIndex[maxIndex]).slice(0,4)
 		let bestChoice
 		let minExpectedBurden = this.maxDeficit
-		for(const choice of choices) {
-			const idealQty = Math.floor(maxValue / choice.product.maxValue)
-			const product = choice.product
-			if (!product.qty) {
-				//console.log(product.team.id, product.id.join(''))
-				continue
-			}
-
+		for(const product of products) {
+			// const idealQty = Math.floor(maxValue / product.maxValue)
+			if (!product.qty) continue
 			const id = product.id
 			const qtys = id.map((val,i)=>Math.floor(deficits[i]/val))
-			choice.qty = Math.min(...qtys, product.qty, Math.floor(balance/product.price))
+			const qty = Math.min(...qtys, product.qty, Math.floor(balance/product.price))
 
-			if (choice.qty > 0) {
-				choice.price = choice.qty*product.price
-				choice.expectedBurden = 0
+			if (qty > 0) {
+				const price = qty*product.price
+				let expectedBurden = 0
 				for(let i=0; i < id.length; i++) {
-					choice.expectedBurden += deficits[i] - choice.qty*id[i];
+					expectedBurden += deficits[i] - qty*id[i];
 				}
 				
-				if (choice.expectedBurden < minExpectedBurden) {
-					bestChoice = choice
-					minExpectedBurden = choice.expectedBurden
+				if (expectedBurden < minExpectedBurden) {
+					bestChoice = {product, qty, price, expectedBurden}
+					minExpectedBurden = expectedBurden
 				}
-				// console.log(choice.product.team.budgets.revenue, idealQty, choice.qty, choice.expectedBurden, choice.product.id)
 			} 
 			//else console.log(balance, product.qty)
 		} 

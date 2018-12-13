@@ -2,6 +2,7 @@ import Products from './products'
 import Person from './person'
 import Team from './team'
 import Catalog from './catalog'
+import Reports from './reports'
 
 export default function main(config) {
 	const products = new Products({
@@ -10,6 +11,7 @@ export default function main(config) {
 	const catalog = new Catalog(products.products)
 	const teams = []
 	const persons = []
+	const reports = new Reports({teams, catalog})
 
 	// create teams
 	for(let i=0; i < config.numTeams; i++) {
@@ -33,6 +35,7 @@ export default function main(config) {
 		}
 	}
 	
+	// run cycles
 	const totalSteps = config.numCycles * config.numSteps
 	for(let n=0; n < totalSteps; n++) {
 		shuffle(persons)
@@ -40,8 +43,9 @@ export default function main(config) {
 			person.act()
 		}
 	}
-	console.log('totalNoBestChoice = ' + catalog.totalNoBestChoice)
-	console.log(report(teams))
+
+	// log output to console
+	reports.summarize()
 }
 
 function shuffle(a) {
@@ -55,10 +59,3 @@ function shuffle(a) {
     return a;
 }
 
-function report(teams) {
-	const reports = []
-	for(const team of teams) {
-		reports.push([team.id, team.report()])
-	}
-	return reports
-}
