@@ -3,26 +3,29 @@ export default class Catalog {
 		this.products = products
 		this.maxDeficit = products[0].id.length*100
 		this.totalNoBestChoice = 0
+		this.byMaxIndex = {}
+		for(const product of products) {
+			if (!this.byMaxIndex[product.maxIndex]) {
+				this.byMaxIndex[product.maxIndex] = []
+			}
+			this.byMaxIndex[product.maxIndex].push(product)
+		}
 	}
 	
 	match(deficits, balance) {
 		const maxValue = Math.max(...deficits)
 		const maxIndex = deficits.indexOf(maxValue)
-		const choices = []
-		
-		this.shuffle(this.products)
-		for(const product of this.products) {
-			if (maxIndex == product.maxIndex) {
-				choices.push({product})
-			}
-			if (choices.length >= 5) break;
-		}
-
+		const choices = this.shuffle(this.byMaxIndex[maxIndex]).slice(0,4).map(this.getChoice)
 		let bestChoice
 		let minExpectedBurden = this.maxDeficit
 		for(const choice of choices) {
 			const idealQty = Math.floor(maxValue / choice.product.maxValue)
 			const product = choice.product
+			if (!product.qty) {
+				//console.log(product.team.id, product.id.join(''))
+				continue
+			}
+
 			const id = product.id
 			const qtys = id.map((val,i)=>Math.floor(deficits[i]/val))
 			choice.qty = Math.min(...qtys, product.qty, Math.floor(balance/product.price))
@@ -40,7 +43,7 @@ export default class Catalog {
 				}
 				// console.log(choice.product.team.budgets.revenue, idealQty, choice.qty, choice.expectedBurden, choice.product.id)
 			} 
-			// else console.log(balance, product.qty)
+			//else console.log(balance, product.qty)
 		} 
 		if (!bestChoice) {
 			this.totalNoBestChoice++
@@ -48,7 +51,9 @@ export default class Catalog {
 		return bestChoice
 	}
 
-
+	getChoice(product) {
+		return {product}
+	}
 
 	shuffle(a) {
 	    var j, x, i;

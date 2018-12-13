@@ -3,6 +3,15 @@ export default class Person {
 		this.id = config.id
 		this.team = config.team
 		this.catalog = config.catalog
+		this.setFitness()
+		this.cyclesPerReport = 0.1*1/this.fitness.length
+		this.burden = 0
+		this.acctBalance = 0
+		this.cycle = ['p','p','p','c']
+		this.cycleIndex = Math.floor(Math.random()*this.cycle.length)
+	}
+
+	setFitness() {
 		const rfit = Math.random().toFixed(8)
 		this.fitness = [
 			Math.max(50,+rfit.slice(2,4)),
@@ -10,11 +19,6 @@ export default class Person {
 			Math.max(50,+rfit.slice(6,8)),
 			Math.max(50,+rfit.slice(8)),
 		]
-		this.cyclesPerReport = 0.1*1/this.fitness.length
-		this.burden = 0
-		this.acctBalance = 0
-		this.cycle = ['p','p','p','c']
-		this.cycleIndex = Math.floor(Math.random()*this.cycle.length)
 	}
 
 	act() {
@@ -32,7 +36,17 @@ export default class Person {
 				maxDeficit = deficit
 			}
 		}
-		if (todo=='c' || maxDeficit > 40) {
+		
+		if (0 && maxDeficit > 99) { //console.log('died '+ this.id, this.fitness)
+			this.setFitness()
+			this.produce(totalDeficit)
+			return
+		}
+
+		if (this.acctBal == 0) {
+			this.produce(totalDeficit)
+		}
+		else if (this.acctBal == 0 || todo=='c' || maxDeficit > 40) {
 			this.consume(deficits)
 		}
 		else {
