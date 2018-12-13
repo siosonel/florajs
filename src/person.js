@@ -10,6 +10,7 @@ export default class Person {
 			Math.max(50,+rfit.slice(6,8)),
 			Math.max(50,+rfit.slice(8)),
 		]
+		this.cyclesPerReport = 0.1*1/this.fitness.length
 		this.burden = 0
 		this.acctBalance = 0
 		this.cycle = ['p','p','p','c']
@@ -80,7 +81,7 @@ export default class Person {
 		for(const f of this.fitness) {
 			burden += 100 - f
 		}
-		this.burden += 0.01*burden
+		this.burden += this.cyclesPerReport * burden
 		return this.burden
 	}
 }

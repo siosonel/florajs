@@ -22,23 +22,28 @@ export default class Team {
 	}
 
 	act(member,totalDeficit) {
-		// add product and (add budget or lower price)
-		// or clean
+		// make more of the product that has the lowest quantity
 		let lowProduct
 		for(const product of this.products) {
-			if (!lowProduct || lowProduct.qty > product) {
+			if (!lowProduct || product.qty < lowProduct.qty) {
 				lowProduct = product
 			}
 		}
-		const qty = Math.floor((100 - totalDeficit)/50 + Math.random()*10)
+		const qty = Math.floor((100 - totalDeficit)/20 + Math.random()*5)
 		lowProduct.qty += qty
+		lowProduct.qtyProduced += qty 
 		const amount = qty*lowProduct.price
 		this.budgets.revenue += amount
 		this.budgets.expense += amount
 		member.acctBalance += amount
 	}
 
-	report() { console.log(this.id, this.members.map(m=>m.fitness), this.products.map(p=>p.qty))
+	report() { 
+		console.log(
+			this.id, 
+			this.members.map(m=>[Math.min(...m.fitness), m.acctBalance]), 
+			this.products.map(p=>[p.id.join(''),p.qty,p.qtyProduced].join('-'))
+		)
 		let burden = 0
 		for(const member of this.members) {
 			burden += member.report()

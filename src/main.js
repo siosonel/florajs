@@ -40,7 +40,7 @@ export default function main(config) {
 			person.act()
 		}
 	}
-	
+	console.log('totalNoBestChoice = ' + catalog.totalNoBestChoice)
 	console.log(report(teams))
 }
 

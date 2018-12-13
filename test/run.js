@@ -1,11 +1,10 @@
 const main = require('../dist/flora.cjs')
 
-// test
 main({
-	numCycles: 5,
+	numCycles: 30,
 	numSteps: 4,
 	numTeams: 10,
 	numMembers: 3,
-	numProducts: 3,
+	numProducts: 3, 
 })
 

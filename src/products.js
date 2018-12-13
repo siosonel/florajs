@@ -13,15 +13,18 @@ export default class Products {
 			if (!productIds.includes(id)) {
 				productIds.push(id)
 				const maxValue = Math.max(...product)
+				const qty = 20 + Math.floor(15*Math.random())
 				this.products.push({
 					id: product,
-					qty: 10 + Math.floor(15*Math.random()),
+					qty,
 					price: 1,
 					maxValue,
-					maxIndex: product.indexOf(maxValue)
+					maxIndex: product.indexOf(maxValue),
+					qtyProduced: qty
 				})
 			}
-		}
+		} 
+		// console.log(this.products.map(d=>d.id))
 		this.currProductIndex = 0
 	}
 
