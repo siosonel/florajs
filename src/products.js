@@ -1,7 +1,7 @@
 export default class Products {
 	constructor(config) {
 		this.products = []
-		const values = [1,2,3,4,5,6,7,8,9]
+		const values = [1,2,3,4,5,6,7,8,9,0]
 		const productIds = []
 		while(this.products.length < config.numProducts) {
 			this.shuffle(values)
@@ -15,7 +15,7 @@ export default class Products {
 				const maxValue = Math.max(...product)
 				this.products.push({
 					id: product,
-					qty: 5 + Math.floor(15*Math.random()),
+					qty: 10 + Math.floor(15*Math.random()),
 					price: 1,
 					maxValue,
 					maxIndex: product.indexOf(maxValue)

@@ -26,14 +26,33 @@ export default function main(config) {
 			const person = new Person({
 				id: j,
 				team,
+				catalog
 			})
 			persons.push(person)
 			team.addMember(person,config.numMembers)
 		}
 	}
-	// console.log(teams[0])
-	// console.log(
-	console.log(catalog.match([40,10,10,10], 10))
+	
+	const totalSteps = config.numCycles * config.numSteps
+	for(let n=0; n < totalSteps; n++) {
+		shuffle(persons)
+		for(const person of persons) {
+			person.act()
+		}
+	}
+	
+	console.log(report(teams))
+}
+
+function shuffle(a) {
+    let j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
 
 function report(teams) {

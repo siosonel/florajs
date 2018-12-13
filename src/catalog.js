@@ -3,7 +3,7 @@ export default class Catalog {
 		this.products = products
 	}
 	
-	match(deficits, balance) { console.log(deficits)
+	match(deficits, balance) {
 		const maxValue = Math.max(...deficits)
 		const maxIndex = deficits.indexOf(maxValue)
 		const choices = []
@@ -16,7 +16,7 @@ export default class Catalog {
 		}
 
 		let bestChoice
-		let minExpectedBurden = 1000
+		let minExpectedBurden = deficits.length*100
 		for(const choice of choices) {
 			const idealQty = Math.floor(maxValue / choice.product.maxValue)
 			const id = choice.product.id
@@ -34,7 +34,7 @@ export default class Catalog {
 					bestChoice = choice
 					minExpectedBurden = choice.expectedBurden
 				}
-				console.log(choice.product.team.budgets.revenue, idealQty, choice.qty, choice.expectedBurden, choice.product.id)
+				//console.log(choice.product.team.budgets.revenue, idealQty, choice.qty, choice.expectedBurden, choice.product.id)
 			} 
 		}
 		return bestChoice
