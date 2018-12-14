@@ -5,9 +5,20 @@ import Catalog from './catalog'
 import Reports from './reports'
 
 export default function main(config) {
+	if (config.numDimensions>10) {
+		console.log(`The configuration parameter numDimensions must be < 11.`)
+		return
+	}
+	if (config.numZeros>9) {
+		console.log(`The configuration parameter numZeros must be < 10.`)
+		return
+	}
+
 	const products = new Products({
-		numProducts: config.numTeams * config.numProducts
-	}) 
+		numProducts: config.numTeams * config.numProducts,
+		numDimensions: config.numDimensions,
+		numZeros: config.numZeros,
+	})
 	const catalog = new Catalog(products.products)
 	const teams = []
 	const persons = []
@@ -28,7 +39,8 @@ export default function main(config) {
 			const person = new Person({
 				id: j,
 				team,
-				catalog
+				catalog,
+				numDimensions: config.numDimensions,
 			})
 			persons.push(person)
 			team.addMember(person,config.numMembers)
