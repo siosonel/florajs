@@ -1,14 +1,15 @@
 export default class Products {
 	constructor(config) {
+		this.numProducts = config.team.numTeams*config.team.numProducts
 		this.products = []
 		const values = [1,2,3,4,5,6,7,8,9,0]
 		const productIds = []
-		const numDimensions = config.numDimensions
-		const zeros = Array(config.numZeros).fill(0)
+		const numDimensions = config.person.numDimensions
+		const zeros = Array(config.product.numZeros).fill(0)
 		const nonZeros = numDimensions - zeros.length
 		const minUniqueProds = this.getMinUniqueProds(numDimensions,zeros)
 
-		while(this.products.length < config.numProducts) {
+		while(this.products.length < this.numProducts) {
 			this.shuffle(values)
 			// require zero on a few product dimensions
 			const product = values.slice(0, nonZeros).concat(zeros)

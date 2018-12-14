@@ -8,8 +8,8 @@ export default class Person {
 		this.cyclesPerReport = 0.1*1/this.fitness.length
 		this.burden = 0
 		this.acctBalance = 0
-		this.cycle = ['p','p','p','c']
-		this.cycleIndex = Math.floor(Math.random()*this.cycle.length)
+		this.schedule = config.schedule
+		this.scheduleIndex = Math.floor(Math.random()*this.schedule.length)
 	}
 
 	setFitness() {
@@ -21,8 +21,8 @@ export default class Person {
 
 	act() {
 		this.decay()
-		const todo = this.cycle[this.cycleIndex]
-		this.cycleIndex = this.cycleIndex < this.cycle.length - 2 ? this.cycleIndex + 1 : 0
+		const todo = this.schedule[this.scheduleIndex]
+		this.scheduleIndex = this.scheduleIndex < this.schedule.length - 2 ? this.scheduleIndex + 1 : 0
 		const deficits = []
 		let totalDeficit = 0
 		let maxDeficit = 0

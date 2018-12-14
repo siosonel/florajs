@@ -1,54 +1,44 @@
+import Config from './config'
 import Products from './products'
 import Person from './person'
 import Team from './team'
 import Catalog from './catalog'
 import Reports from './reports'
 
-export default function main(config) {
-	if (config.numDimensions>10) {
-		console.log(`The configuration parameter numDimensions must be < 11.`)
-		return
-	}
-	if (config.numZeros>9) {
-		console.log(`The configuration parameter numZeros must be < 10.`)
-		return
-	}
-
-	const products = new Products({
-		numProducts: config.numTeams * config.numProducts,
-		numDimensions: config.numDimensions,
-		numZeros: config.numZeros,
-	})
+export default function main(_config) {
+	const config = (new Config(_config)).config
+	const products = new Products(config)
 	const catalog = new Catalog(products.products)
 	const teams = []
 	const persons = []
 	const reports = new Reports({teams, catalog})
 
 	// create teams
-	for(let i=0; i < config.numTeams; i++) {
+	for(let i=0; i < config.team.numTeams; i++) {
 		const team = new Team({
 			id: i,
 		})
 		teams.push(team)
 		
-		for(let k=0; k < config.numProducts; k++) {
+		for(let k=0; k < config.team.numProducts; k++) {
 			products.assign(team)
 		}
 
-		for(let j=0; j < config.numMembers; j++) {
+		for(let j=0; j < config.team.numMembers; j++) {
 			const person = new Person({
 				id: j,
 				team,
 				catalog,
-				numDimensions: config.numDimensions,
+				numDimensions: config.person.numDimensions,
+				schedule: config.person.schedule,
 			})
 			persons.push(person)
-			team.addMember(person,config.numMembers)
+			team.addMember(person,config.team.numMembers)
 		}
 	}
 	
 	// run cycles
-	const totalSteps = config.numCycles * config.numSteps
+	const totalSteps = config.batch.numCycles * config.batch.numSteps
 	for(let n=0; n < totalSteps; n++) {
 		shuffle(persons)
 		for(const person of persons) {
