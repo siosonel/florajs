@@ -28,6 +28,9 @@ export default class Catalog {
 			if (qty > 0) {
 				const price = qty*product.price
 				let expectedBurden = 0
+
+				// calculate burden as though product.effect is dimensional
+				// this calculation will be ignored if product.effect if random
 				for(let i=0; i < id.length; i++) {
 					expectedBurden += deficits[i] - qty*id[i];
 				}
@@ -35,10 +38,17 @@ export default class Catalog {
 				if (expectedBurden < minExpectedBurden) {
 					bestChoice = {product, qty, price, expectedBurden}
 					minExpectedBurden = expectedBurden
+					
+					// if product consumption effect is random,
+					// no need to optimize by comparing dimensional effect
+					// of other product choices
+					if (product.effect == 'random') {
+						break
+					}
 				}
 			} 
 			//else console.log(balance, product.qty)
-		} 
+		}
 		if (!bestChoice) {
 			this.totalNoBestChoice++
 		}

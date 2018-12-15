@@ -11,6 +11,8 @@ main({
 	},
 	product: {
 		numZeros: 2,
+		effect: "dimensional",
+		//effect: "random",
 	},
 	team: {
 		numTeams: 48,
@@ -18,4 +20,3 @@ main({
 		numProducts: 4,
 	}
 })
-

@@ -12,6 +12,7 @@ export default class Config {
 			},
 			product: {
 				numZeros: 2,
+				effect: 'dimensional', // or random
 			},
 			team: {
 				numTeams: 12,

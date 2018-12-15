@@ -26,7 +26,8 @@ export default class Products {
 					price: 1,
 					maxValue,
 					maxIndex: product.indexOf(maxValue),
-					qtyProduced: qty
+					qtyProduced: qty,
+					effect: config.product.effect,
 				})
 			}
 		} 

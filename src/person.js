@@ -81,7 +81,17 @@ export default class Person {
 
 		// buyer consumes product
 		for(let i=0; i < this.fitness.length; i++) {
-			this.fitness[i] += choice.qty*choice.product.id[i]
+			if (choice.product.effect == 'dimensional') {
+				this.fitness[i] += choice.qty*choice.product.id[i]
+			}
+			// for testing only
+			else if (choice.product.effect == 'random') {
+				this.fitness[i] = this.fitness[i] + Math.floor(Math.random()*(99-this.fitness[i]))
+			}
+			else {
+				throw `Unknown configuration product.effect=${choice.product.effect}.`
+			}
+
 			if (this.fitness[i] < 0) {
 				this.fitness[i] = 0
 			}

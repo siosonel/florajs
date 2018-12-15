@@ -14,8 +14,11 @@ Clone this repository and install its dependencies:
 git clone $repo/flora
 cd flora
 npm install
-# set git-ignored patterns 
 ```
+
+`npm run dev` builds the library, then keeps rebuilding it whenever the source files change using [rollup-watch](https://github.com/rollup/rollup-watch).
+
+`npm test` builds the library, then tests it.
 
 `npm run build` builds the library to `dist`, generating three files:
 
@@ -26,9 +29,6 @@ npm install
 * `dist/flora.umd.js`
     a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json
 
-`npm run dev` builds the library, then keeps rebuilding it whenever the source files change using [rollup-watch](https://github.com/rollup/rollup-watch).
-
-`npm test` builds the library, then tests it.
 
 ## License
 
